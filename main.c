@@ -25,44 +25,56 @@ void print_board(char board[HEIGHT][WIDTH]) {
     }
 }
 
-
-void player_move(char board[HEIGHT][WIDTH], int *x, int *y) {
+void player_move(char board[HEIGHT][WIDTH], int *player_x, int *player_y, int *caillou_x, int *caillou_y) {
     char input;
 
     printf("Choisissez un mouvement : Haut(z) Bas(s) Gauche(q) Droite(d) \n");
     input = getchar();
     getchar(); 
 
-    board[*y][*x] = ' ';
+    int new_x = *player_x;
+    int new_y = *player_y;
 
     switch (input) {
         case 'z': 
-            if (*y > 1) (*y)--;
+            new_y--;
             break;
         case 's': 
-            if (*y < HEIGHT - 2) (*y)++;
+            new_y++;
             break;
         case 'q':
-            if (*x > 1) (*x)--;
+            new_x--;
             break;
         case 'd': 
-            if (*x < WIDTH - 2) (*x)++;
+            new_x++;
             break;
     }
 
-    board[*y][*x] = '@';
+    if (new_x == *caillou_x && new_y == *caillou_y) {
+        int new_caillou_x = *caillou_x + (new_x - *player_x);
+        int new_caillou_y = *caillou_y + (new_y - *player_y);
+
+        if (board[new_caillou_y][new_caillou_x] == ' ') {
+            board[*caillou_y][*caillou_x] = ' ';
+            *caillou_x = new_caillou_x;
+            *caillou_y = new_caillou_y;
+            board[*caillou_y][*caillou_x] = 'O';
+        } else {
+            return;
+        }
+    }
+
+    if (board[new_y][new_x] == ' ') {
+        board[*player_y][*player_x] = ' ';
+        *player_x = new_x;
+        *player_y = new_y;
+        board[*player_y][*player_x] = '@';
+    }
 }
 
-void caillou(char board[HEIGHT][WIDTH], int *x, int *y) {
-    char input;
-    board[*y][*x] = 'O';
+int check_victory(int caillou_x, int caillou_y, int trou_x, int trou_y) {
+    return (caillou_x == trou_x && caillou_y == trou_y);
 }
-
-void trou(char board[HEIGHT][WIDTH], int *x, int *y) {
-    char input;
-    board[*y][*x] = '.';
-}
-
 
 int main() {
     char board[HEIGHT][WIDTH];
@@ -77,12 +89,15 @@ int main() {
     
     while (1) {
         print_board(board); 
-        player_move(board, &player_x, &player_y);
-        trou(board, &trou_x, &trou_y);
-        caillou(board, &caillou_x, &caillou_y);
+        player_move(board, &player_x, &player_y, &caillou_x, &caillou_y);
+        
+        if (check_victory(caillou_x, caillou_y, trou_x, trou_y)) {
+            print_board(board);
+            printf("Vous avez gagné !\n");
+            break;
+        }
     }
 
     return 0;
 }
-
 
