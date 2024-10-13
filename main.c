@@ -60,7 +60,7 @@ void player_move(char board[HEIGHT][WIDTH], int *player_x, int *player_y, int *c
             *caillou_y = new_caillou_y;
             board[*caillou_y][*caillou_x] = 'O';
         } else {
-            return;
+            return;  
         }
     }
 
@@ -72,8 +72,19 @@ void player_move(char board[HEIGHT][WIDTH], int *player_x, int *player_y, int *c
     }
 }
 
+
 int check_victory(int caillou_x, int caillou_y, int trou_x, int trou_y) {
     return (caillou_x == trou_x && caillou_y == trou_y);
+}
+
+int check_defeat(char board[HEIGHT][WIDTH], int caillou_x, int caillou_y) {
+    if ((board[caillou_y - 1][caillou_x] != ' ' && board[caillou_y - 1][caillou_x] != '.') &&  // Haut
+        (board[caillou_y + 1][caillou_x] != ' ' && board[caillou_y + 1][caillou_x] != '.') &&  // Bas
+        (board[caillou_y][caillou_x - 1] != ' ' && board[caillou_y][caillou_x - 1] != '.') &&  // Gauche
+        (board[caillou_y][caillou_x + 1] != ' ' && board[caillou_y][caillou_x + 1] != '.')) {  // Droite
+        return 1; 
+    }
+    return 0; 
 }
 
 int main() {
@@ -96,8 +107,13 @@ int main() {
             printf("Vous avez gagné !\n");
             break;
         }
+
+        if (check_defeat(board, caillou_x, caillou_y)) {
+            print_board(board);
+            printf("Défaite ! Le caillou est bloqué.\n");
+            break;
+        }
     }
 
     return 0;
 }
-
