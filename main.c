@@ -78,10 +78,10 @@ int check_victory(int caillou_x, int caillou_y, int trou_x, int trou_y) {
 }
 
 int check_defeat(char board[HEIGHT][WIDTH], int caillou_x, int caillou_y) {
-    if ((board[caillou_y - 1][caillou_x] != ' ' && board[caillou_y - 1][caillou_x] != '.') &&  // Haut
-        (board[caillou_y + 1][caillou_x] != ' ' && board[caillou_y + 1][caillou_x] != '.') &&  // Bas
-        (board[caillou_y][caillou_x - 1] != ' ' && board[caillou_y][caillou_x - 1] != '.') &&  // Gauche
-        (board[caillou_y][caillou_x + 1] != ' ' && board[caillou_y][caillou_x + 1] != '.')) {  // Droite
+    if ((board[caillou_y - 1][caillou_x] != ' ' && board[caillou_y - 1][caillou_x] != '.') &&
+        (board[caillou_y + 1][caillou_x] != ' ' && board[caillou_y + 1][caillou_x] != '.') &&
+        (board[caillou_y][caillou_x - 1] != ' ' && board[caillou_y][caillou_x - 1] != '.') &&
+        (board[caillou_y][caillou_x + 1] != ' ' && board[caillou_y][caillou_x + 1] != '.')) {
         return 1; 
     }
     return 0; 
